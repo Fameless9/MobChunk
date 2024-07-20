@@ -43,6 +43,7 @@ public class ChunkListeners implements Listener {
     public void onPlayerMove(PlayerMoveEvent event) {
         if (!mobChunkPlugin.getTimer().isRunning()) return;
         if (event.getFrom().getChunk().equals(event.getTo().getChunk())) return;
+        killLastSpawnedEntity();
         focusChunk(event.getTo().getChunk());
         EntityType mob = getMob(event.getTo().getChunk());
         lastSpawned = event.getTo().getWorld().spawnEntity(getCenter(event.getTo().getChunk()), mob);
@@ -57,6 +58,7 @@ public class ChunkListeners implements Listener {
         if (focusedChunk == null) return;
         if (event.getEntityType() == getMob(focusedChunk)) {
             resetFocus(event.getEntity().getWorld());
+            lastSpawned = null;
         }
     }
 
