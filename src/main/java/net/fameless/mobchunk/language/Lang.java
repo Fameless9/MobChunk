@@ -18,7 +18,7 @@ public class Lang {
     private static JsonObject langObject = null;
     private static Language language;
 
-    public static void loadLanguage(MobChunkPlugin mobChunkPlugin) {
+    public static void loadLanguage(@NotNull MobChunkPlugin mobChunkPlugin) {
         mobChunkPlugin.reloadConfig();
         String lang = mobChunkPlugin.getConfig().getString("lang", "en");
         File jsonFile;
@@ -46,13 +46,13 @@ public class Lang {
         }
     }
 
-    public static String getCaption(String path) {
+    public static @NotNull String getCaption(String path) {
         String message = langObject.get(path).getAsString();
         message = message.replace("{timer.time}", Format.formatTime(MobChunkPlugin.get().getTimer().getTime()));
         return LegacyComponentSerializer.legacySection().serialize(MiniMessage.miniMessage().deserialize(message));
     }
 
-    public static String getCaption(String path, @NotNull EntityType mobReplacement) {
+    public static @NotNull String getCaption(String path, @NotNull EntityType mobReplacement) {
         String message = langObject.get(path).getAsString();
         message = message.replace("{timer.time}", Format.formatTime(MobChunkPlugin.get().getTimer().getTime()))
                 .replace("{mob}", Format.formatName(mobReplacement.name()));

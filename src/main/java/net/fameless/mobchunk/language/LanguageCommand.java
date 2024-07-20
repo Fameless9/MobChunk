@@ -36,7 +36,7 @@ public class LanguageCommand implements CommandExecutor, Listener, InventoryHold
         return false;
     }
 
-    private Inventory getLanguageInventory() {
+    private @NotNull Inventory getLanguageInventory() {
         Inventory gui = Bukkit.createInventory(this, 9, Lang.getCaption("adjust-language"));
         gui.setItem(0, ItemBuilder.buildItem(Skull.FLAG_UK.asItemStack(), Component.text("English", NamedTextColor.GOLD), false,
                 Component.text("Click to set the language to english", NamedTextColor.GRAY)));
@@ -46,7 +46,7 @@ public class LanguageCommand implements CommandExecutor, Listener, InventoryHold
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onInventoryClick(InventoryClickEvent event) {
+    public void onInventoryClick(@NotNull InventoryClickEvent event) {
         if (!(event.getInventory().getHolder() instanceof LanguageCommand)) return;
         event.setCancelled(true);
 

@@ -1,5 +1,6 @@
-package net.fameless.mobchunk;
+package net.fameless.mobchunk.game;
 
+import net.fameless.mobchunk.MobChunkPlugin;
 import net.fameless.mobchunk.language.Lang;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -97,7 +98,7 @@ public class Timer implements CommandExecutor, TabCompleter {
     }
 
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String @NotNull [] args) {
         if (args.length == 1) {
             return StringUtil.copyPartialMatches(args[0], List.of("set", "toggle"), new ArrayList<>());
         }

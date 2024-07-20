@@ -6,6 +6,8 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,7 +15,8 @@ import java.util.List;
 
 public class ItemBuilder {
 
-    public static ItemStack buildItem(ItemStack itemStack, Component name, boolean applyFlags, Component ...lore) {
+    @Contract("_, _, _, _ -> param1")
+    public static @NotNull ItemStack buildItem(@NotNull ItemStack itemStack, Component name, boolean applyFlags, Component ...lore) {
         ItemMeta meta = itemStack.getItemMeta();
         if (meta == null) return itemStack;
         meta.setDisplayName(LegacyComponentSerializer.legacySection().serialize(name.decoration(TextDecoration.ITALIC, TextDecoration.State.FALSE)));

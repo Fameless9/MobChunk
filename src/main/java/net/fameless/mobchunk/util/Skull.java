@@ -6,6 +6,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.profile.PlayerProfile;
 import org.bukkit.profile.PlayerTextures;
+import org.jetbrains.annotations.NotNull;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -40,7 +41,7 @@ public enum Skull {
         this.url = url;
     }
 
-    public ItemStack asItemStack() {
+    public @NotNull ItemStack asItemStack() {
         ItemStack skullStack = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta skullMeta = (SkullMeta) skullStack.getItemMeta();
         PlayerProfile profile = Bukkit.getServer().createPlayerProfile(UUID.randomUUID());
@@ -63,7 +64,7 @@ public enum Skull {
     }
 
     public static class PlayerSkulls {
-        public static ItemStack getSkullByUUID(UUID uuid) {
+        public static @NotNull ItemStack getSkullByUUID(UUID uuid) {
             ItemStack skullStack = new ItemStack(Material.PLAYER_HEAD);
             SkullMeta skullMeta = (SkullMeta) skullStack.getItemMeta();
             PlayerProfile profile = Bukkit.getServer().createPlayerProfile(uuid);

@@ -1,5 +1,6 @@
-package net.fameless.mobchunk;
+package net.fameless.mobchunk.game;
 
+import net.fameless.mobchunk.MobChunkPlugin;
 import net.fameless.mobchunk.language.Lang;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -19,8 +20,8 @@ import java.util.*;
 public class ChunkListeners implements Listener {
 
     private final MobChunkPlugin mobChunkPlugin;
-    private final HashMap<Chunk, EntityType> chunkMobHashMap = new HashMap<>();
     private final Random random = new Random();
+    private final HashMap<Chunk, EntityType> chunkMobHashMap = new HashMap<>();
     private final List<EntityType> availableMobs = new ArrayList<>();
     private Chunk focusedChunk = null;
     private Entity lastSpawned = null;

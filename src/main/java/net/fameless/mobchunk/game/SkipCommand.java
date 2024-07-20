@@ -1,5 +1,6 @@
-package net.fameless.mobchunk;
+package net.fameless.mobchunk.game;
 
+import net.fameless.mobchunk.MobChunkPlugin;
 import net.fameless.mobchunk.language.Lang;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
