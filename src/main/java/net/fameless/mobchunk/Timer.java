@@ -1,6 +1,8 @@
 package net.fameless.mobchunk;
 
 import net.fameless.mobchunk.language.Lang;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -47,16 +49,16 @@ public class Timer implements CommandExecutor, TabCompleter {
     private void sendActionbar() {
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (running) {
-                p.sendActionBar(Lang.getCaption("timer-running"));
+                p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Lang.getCaption("timer-running")));
             } else {
-                p.sendActionBar(Lang.getCaption("timer-paused"));
+                p.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Lang.getCaption("timer-paused")));
             }
         }
     }
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
-        if (!(sender instanceof Player player)) {
+        if (!(sender instanceof Player)) {
             sender.sendMessage(Lang.getCaption("not-a-player"));
             return false;
         }
@@ -69,7 +71,9 @@ public class Timer implements CommandExecutor, TabCompleter {
             case "toggle": {
                 this.running = !running;
                 if (!running) {
-                    mobChunkPlugin.getChunkListeners().resetFocus(player.getWorld());
+                    mobChunkPlugin.getChunkListeners().handlePause();
+                } else {
+                    mobChunkPlugin.getChunkListeners().handleStart();
                 }
                 break;
             }

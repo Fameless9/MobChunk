@@ -25,14 +25,14 @@ public class ChunkListeners implements Listener {
     private Chunk focusedChunk = null;
     private Entity lastSpawned = null;
 
-    public ChunkListeners(MobChunkPlugin mobChunkPlugin) {
+    public ChunkListeners(@NotNull MobChunkPlugin mobChunkPlugin) {
         this.mobChunkPlugin = mobChunkPlugin;
         List<String> mobsToExclude = mobChunkPlugin.getConfig().getStringList("excluded-mobs");
         Arrays.stream(EntityType.values()).filter(entityType -> !mobsToExclude.contains(entityType.name())).forEach(availableMobs::add);
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onPopulate(ChunkPopulateEvent event) {
+    public void onPopulate(@NotNull ChunkPopulateEvent event) {
         if (!chunkMobHashMap.containsKey(event.getChunk())) {
             updateMob(event.getChunk());
         }
@@ -42,11 +42,7 @@ public class ChunkListeners implements Listener {
     public void onPlayerMove(PlayerMoveEvent event) {
         if (!mobChunkPlugin.getTimer().isRunning()) return;
         if (event.getFrom().getChunk().equals(event.getTo().getChunk())) return;
-        killLastSpawnedEntity();
-        focusChunk(event.getTo().getChunk());
-        EntityType mob = getMob(event.getTo().getChunk());
-        lastSpawned = event.getTo().getWorld().spawnEntity(getCenter(event.getTo().getChunk()), mob);
-        Bukkit.broadcast(Lang.getCaption("kill-mob-message", mob));
+        update(event.getTo().getChunk());
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -56,6 +52,14 @@ public class ChunkListeners implements Listener {
             resetFocus(event.getEntity().getWorld());
             lastSpawned = null;
         }
+    }
+
+    private void update(Chunk chunk) {
+        killLastSpawnedEntity();
+        focusChunk(chunk);
+        EntityType mob = getMob(chunk);
+        lastSpawned = chunk.getWorld().spawnEntity(getCenter(chunk), mob);
+        Bukkit.broadcastMessage(Lang.getCaption("kill-mob-message", mob));
     }
 
     @NotNull
@@ -68,21 +72,35 @@ public class ChunkListeners implements Listener {
         chunkMobHashMap.put(chunk, mob);
     }
 
-    private void focusChunk(Chunk chunk) {
+    private void focusChunk(@NotNull Chunk chunk) {
         chunk.getWorld().getWorldBorder().setCenter(getCenter(chunk));
         chunk.getWorld().getWorldBorder().setSize(16);
         focusedChunk = chunk;
     }
 
-    public void resetFocus(World world) {
+    public void resetFocus(@NotNull World world) {
         world.getWorldBorder().reset();
         focusedChunk = null;
     }
 
-    private Location getCenter(Chunk chunk) {
+    @NotNull
+    private Location getCenter(@NotNull Chunk chunk) {
         Location location = chunk.getBlock(8, 64, 8).getLocation();
         location.setY(location.getWorld().getHighestBlockYAt(location.getBlockX(), location.getBlockZ()) + 1);
         return location;
+    }
+
+    public void handleStart() {
+        if (Bukkit.getOnlinePlayers().isEmpty()) return;
+        Chunk chunk = Bukkit.getOnlinePlayers().stream().toList().get(0).getLocation().getChunk();
+        update(chunk);
+    }
+
+    public void handlePause() {
+        killLastSpawnedEntity();
+        for (World world : Bukkit.getServer().getWorlds()) {
+            resetFocus(world);
+        }
     }
 
     public void handleShutdown() {

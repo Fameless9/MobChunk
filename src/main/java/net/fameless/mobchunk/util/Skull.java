@@ -1,63 +1,79 @@
 package net.fameless.mobchunk.util;
 
-import com.destroystokyo.paper.profile.PlayerProfile;
-import com.destroystokyo.paper.profile.ProfileProperty;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.profile.PlayerProfile;
+import org.bukkit.profile.PlayerTextures;
 
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.UUID;
 
 public enum Skull {
 
-    NUMBER_0("MGViZTdlNTIxNTE2OWE2OTlhY2M2Y2VmYTdiNzNmZGIxMDhkYjg3YmI2ZGFlMjg0OWZiZTI0NzE0YjI3In19fQ=="),
-    NUMBER_1("NzFiYzJiY2ZiMmJkMzc1OWU2YjFlODZmYzdhNzk1ODVlMTEyN2RkMzU3ZmMyMDI4OTNmOWRlMjQxYmM5ZTUzMCJ9fX0="),
-    NUMBER_2("NGNkOWVlZWU4ODM0Njg4ODFkODM4NDhhNDZiZjMwMTI0ODVjMjNmNzU3NTNiOGZiZTg0ODczNDE0MTk4NDcifX19"),
-    NUMBER_3("MWQ0ZWFlMTM5MzM4NjBhNmRmNWU4ZTk1NTY5M2I5NWE4YzNiMTVjMzZiOGI1ODc1MzJhYzA5OTZiYzM3ZTUifX19"),
-    NUMBER_4("ZDJlNzhmYjIyNDI0MjMyZGMyN2I4MWZiY2I0N2ZkMjRjMWFjZjc2MDk4NzUzZjJkOWMyODU5ODI4N2RiNSJ9fX0="),
-    NUMBER_5("NmQ1N2UzYmM4OGE2NTczMGUzMWExNGUzZjQxZTAzOGE1ZWNmMDg5MWE2YzI0MzY0M2I4ZTU0NzZhZTIifX19"),
-    NUMBER_6("MzM0YjM2ZGU3ZDY3OWI4YmJjNzI1NDk5YWRhZWYyNGRjNTE4ZjVhZTIzZTcxNjk4MWUxZGNjNmIyNzIwYWIifX19"),
-    NUMBER_7("NmRiNmViMjVkMWZhYWJlMzBjZjQ0NGRjNjMzYjU4MzI0NzVlMzgwOTZiN2UyNDAyYTNlYzQ3NmRkN2I5In19fQ=="),
-    NUMBER_8("NTkxOTQ5NzNhM2YxN2JkYTk5NzhlZDYyNzMzODM5OTcyMjI3NzRiNDU0Mzg2YzgzMTljMDRmMWY0Zjc0YzJiNSJ9fX0="),
-    NUMBER_9("ZTY3Y2FmNzU5MWIzOGUxMjVhODAxN2Q1OGNmYzY0MzNiZmFmODRjZDQ5OWQ3OTRmNDFkMTBiZmYyZTViODQwIn19fQ=="),
-    BLANK("NWRiNTMyYjVjY2VkNDZiNGI1MzVlY2UxNmVjZWQ3YmJjNWNhYzU1NTk0ZDYxZThiOGY4ZWFjNDI5OWM5ZmMifX19"),
-    COLON("Y2NiZWUyOGUyYzc5ZGIxMzhmMzk3N2JhNDcyZGZhZTZiMTFhOWJiODJkNWIzZDdmMjU0NzkzMzhmZmYxZmU5MiJ9fX0="),
-    SLASH("N2Y5NWQ3YzFiYmYzYWZhMjg1ZDhkOTY3NTdiYjU1NzIyNTlhM2FlODU0ZjUzODlkYzUzMjA3Njk5ZDk0ZmQ4In19fQ=="),
-    INFO("ZDAxYWZlOTczYzU0ODJmZGM3MWU2YWExMDY5ODgzM2M3OWM0MzdmMjEzMDhlYTlhMWEwOTU3NDZlYzI3NGEwZiJ9fX0="),
-    QUESTION_MARK("M2ZkYWI0MDQzNGVkNWQwMWY1OGM0NWNhMGM5ZmFkYTQ2NjJlMTc3MmZmNDNlMjk3NDk3OTQ0MGE1Y2ZlMTVjOSJ9fX0="),
-    HEART("OWNhYTc0NDZiZTg3NGJmMWExNGVkMWZjZWZjYzBhMDkyMzM2YzFiZjViZjQ2NWU5ZDI1NGRlZTM0YWZlYTc5In19fQ=="),
-    ARROW_UP("NDVjNTg4YjllYzBhMDhhMzdlMDFhODA5ZWQwOTAzY2MzNGMzZTNmMTc2ZGM5MjIzMDQxN2RhOTNiOTQ4ZjE0OCJ9fX0="),
-    ARROW_DOWN("MWNiOGJlMTZkNDBjMjVhY2U2NGUwOWY2MDg2ZDQwOGViYzNkNTQ1Y2ZiMjk5MGM1YjZjMjVkYWJjZWRlYWNjIn19fQ=="),
-    TRAFFIC_LIGHT("YjBiZjgwYjcxNDJhMmQwNzZlNGMxMzM3N2JhZDk3NzhlMjJhNzRjMzA5ZjE1M2MwMzI0ZTIxYTRiNWI5NjVhIn19fQ=="),
-    FLAG_UK("YzQzOWQ3ZjljNjdmMzJkY2JiODZiNzAxMGIxZTE0YjYwZGU5Njc3NmEzNWY2MWNlZTk4MjY2MGFhY2Y1MjY0YiJ9fX0="),
-    FLAG_GERMANY("NWU3ODk5YjQ4MDY4NTg2OTdlMjgzZjA4NGQ5MTczZmU0ODc4ODY0NTM3NzQ2MjZiMjRiZDhjZmVjYzc3YjNmIn19fQ==");
+    NUMBER_0("0ebe7e5215169a699acc6cefa7b73fdb108db87bb6dae2849fbe24714b27"),
+    NUMBER_1("71bc2bcfb2bd3759e6b1e86fc7a79585e1127dd357fc202893f9de241bc9e530"),
+    NUMBER_2("4cd9eeee883468881d83848a46bf3012485c23f75753b8fbe8487341419847"),
+    NUMBER_3("1d4eae13933860a6df5e8e955693b95a8c3b15c36b8b587532ac0996bc37e5"),
+    NUMBER_4("d2e78fb22424232dc27b81fbcb47fd24c1acf76098753f2d9c28598287db5"),
+    NUMBER_5("6d57e3bc88a65730e31a14e3f41e038a5ecf0891a6c243643b8e5476ae2"),
+    NUMBER_6("334b36de7d679b8bbc725499adaef24dc518f5ae23e716981e1dcc6b2720ab"),
+    NUMBER_7("6db6eb25d1faabe30cf444dc633b5832475e38096b7e2402a3ec476dd7b9"),
+    NUMBER_8("59194973a3f17bda9978ed6273383997222774b454386c8319c04f1f4f74c2b5"),
+    NUMBER_9("e67caf7591b38e125a8017d58cfc6433bfaf84cd499d794f41d10bff2e5b840"),
+    COLON("ccbee28e2c79db138f3977ba472dfae6b11a9bb82d5b3d7f25479338fff1fe92="),
+    SLASH("7f95d7c1bbf3afa285d8d96757bb5572259a3ae854f5389dc53207699d94fd8=="),
+    INFO("d01afe973c5482fdc71e6aa10698833c79c437f21308ea9a1a095746ec274a0f="),
+    QUESTION_MARK("badc048a7ce78f7dad72a07da27d85c0916881e5522eeed1e3daf217a38c1a="),
+    HEART("336febeca7c488a6671dc071655dde2a1b65c3ccb20b6e8eaf9bfb08e64b80=="),
+    ARROW_UP("3040fe836a6c2fbd2c7a9c8ec6be5174fddf1ac20f55e366156fa5f712e10="),
+    ARROW_DOWN("7437346d8bda78d525d19f540a95e4e79daeda795cbc5a13256236312cf=="),
+    TRAFFIC_LIGHT("b0bf80b7142a2d076e4c13377bad9778e22a74c309f153c0324e21a4b5b965a=="),
+    FLAG_UK("8831c73f5468e888c3019e2847e442dfaa88898d50ccf01fd2f914af544d5368="),
+    FLAG_GERMANY("5e7899b4806858697e283f084d9173fe487886453774626b24bd8cfecc77b3f==");
 
-    private final ItemStack itemStack;
+    private final String url;
 
-    Skull(String texture) {
+    Skull(String url) {
+        this.url = url;
+    }
+
+    public ItemStack asItemStack() {
+        ItemStack skullStack = new ItemStack(Material.PLAYER_HEAD);
+        SkullMeta skullMeta = (SkullMeta) skullStack.getItemMeta();
+        PlayerProfile profile = Bukkit.getServer().createPlayerProfile(UUID.randomUUID());
+        PlayerTextures textures = profile.getTextures();
+
         try {
-            itemStack = getSkull(texture);
+            textures.setSkin(new URL("https://textures.minecraft.net/texture/" + url));
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
+
+        profile.setTextures(textures);
+
+        if (skullMeta != null) {
+            skullMeta.setOwnerProfile(profile);
+            skullStack.setItemMeta(skullMeta);
+        }
+
+        return skullStack;
     }
 
-    public ItemStack getAsItemStack() {
-        return itemStack;
-    }
+    public static class PlayerSkulls {
+        public static ItemStack getSkullByUUID(UUID uuid) {
+            ItemStack skullStack = new ItemStack(Material.PLAYER_HEAD);
+            SkullMeta skullMeta = (SkullMeta) skullStack.getItemMeta();
+            PlayerProfile profile = Bukkit.getServer().createPlayerProfile(uuid);
 
-    private ItemStack getSkull(String texture) throws MalformedURLException {
-        String prefix = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUv";
-        ItemStack head = new ItemStack(Material.PLAYER_HEAD);
-        SkullMeta meta = (SkullMeta) head.getItemMeta();
+            if (skullMeta != null) {
+                skullMeta.setOwnerProfile(profile);
+                skullStack.setItemMeta(skullMeta);
+            }
 
-        PlayerProfile profile = Bukkit.createProfile(UUID.randomUUID());
-        profile.setProperty(new ProfileProperty("textures", prefix + texture));
-        meta.setPlayerProfile(profile);
-
-        head.setItemMeta(meta);
-        return head;
+            return skullStack;
+        }
     }
 }

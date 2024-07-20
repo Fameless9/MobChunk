@@ -1,8 +1,6 @@
 package net.fameless.mobchunk;
 
 import net.fameless.mobchunk.language.Lang;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -32,7 +30,7 @@ public class SkipCommand implements CommandExecutor {
         mobChunkPlugin.getChunkListeners().updateMob(mobChunkPlugin.getChunkListeners().getFocusedChunk());
         mobChunkPlugin.getChunkListeners().resetFocus(player.getWorld());
         mobChunkPlugin.getChunkListeners().killLastSpawnedEntity();
-        Bukkit.broadcast(Lang.getCaption("mob-skipped"));
+        Bukkit.broadcastMessage(Lang.getCaption("mob-skipped"));
         return false;
     }
 }

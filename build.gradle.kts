@@ -6,12 +6,13 @@ plugins {
 
 repositories {
     mavenLocal()
+    mavenCentral()
     maven {
-        url = uri("https://repo.papermc.io/repository/maven-public/")
+        url = uri("https://oss.sonatype.org/content/repositories/snapshots")
     }
 
     maven {
-        url = uri("https://oss.sonatype.org/content/groups/public/")
+        url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
     }
 
     maven {
@@ -20,12 +21,15 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot-api:1.20.4-R0.1-SNAPSHOT")
     implementation("org.bstats:bstats-bukkit:3.0.2")
+    implementation("net.kyori:adventure-api:4.17.0")
+    implementation("net.kyori:adventure-text-minimessage:4.17.0")
+    implementation("net.kyori:adventure-text-serializer-legacy:4.17.0")
 }
 
 group = "net.fameless"
-version = "1.1.0"
+version = "1.1.3"
 description = "ChunkMob"
 java.sourceCompatibility = JavaVersion.VERSION_17
 

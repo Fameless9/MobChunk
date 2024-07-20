@@ -4,8 +4,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.fameless.mobchunk.MobChunkPlugin;
 import net.fameless.mobchunk.util.Format;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,7 +18,7 @@ public class Lang {
     private static JsonObject langObject = null;
     private static Language language;
 
-    public static void loadLanguage(@NotNull MobChunkPlugin mobChunkPlugin) {
+    public static void loadLanguage(MobChunkPlugin mobChunkPlugin) {
         mobChunkPlugin.reloadConfig();
         String lang = mobChunkPlugin.getConfig().getString("lang", "en");
         File jsonFile;
@@ -46,17 +46,17 @@ public class Lang {
         }
     }
 
-    public static @NotNull Component getCaption(String path) {
+    public static String getCaption(String path) {
         String message = langObject.get(path).getAsString();
         message = message.replace("{timer.time}", Format.formatTime(MobChunkPlugin.get().getTimer().getTime()));
-        return MiniMessage.miniMessage().deserialize(message);
+        return LegacyComponentSerializer.legacySection().serialize(MiniMessage.miniMessage().deserialize(message));
     }
 
-    public static @NotNull Component getCaption(String path, @NotNull EntityType mobReplacement) {
+    public static String getCaption(String path, @NotNull EntityType mobReplacement) {
         String message = langObject.get(path).getAsString();
         message = message.replace("{timer.time}", Format.formatTime(MobChunkPlugin.get().getTimer().getTime()))
                 .replace("{mob}", Format.formatName(mobReplacement.name()));
-        return MiniMessage.miniMessage().deserialize(message);
+        return LegacyComponentSerializer.legacySection().serialize(MiniMessage.miniMessage().deserialize(message));
     }
 
     public static Language getLanguage() {
