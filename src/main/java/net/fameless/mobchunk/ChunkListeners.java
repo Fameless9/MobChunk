@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -23,6 +24,7 @@ public class ChunkListeners implements Listener {
     private final Random random = new Random();
     private final List<EntityType> availableMobs = new ArrayList<>();
     private Chunk focusedChunk = null;
+    private Entity lastSpawned = null;
 
     public ChunkListeners(MobChunkPlugin mobChunkPlugin) {
         this.mobChunkPlugin = mobChunkPlugin;
@@ -33,8 +35,7 @@ public class ChunkListeners implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onPopulate(ChunkPopulateEvent event) {
         if (!chunkMobHashMap.containsKey(event.getChunk())) {
-            EntityType mob = availableMobs.get(random.nextInt(availableMobs.size()));
-            chunkMobHashMap.put(event.getChunk(), mob);
+            updateMob(event.getChunk());
         }
     }
 
@@ -44,7 +45,7 @@ public class ChunkListeners implements Listener {
         if (event.getFrom().getChunk().equals(event.getTo().getChunk())) return;
         focusChunk(event.getTo().getChunk());
         EntityType mob = getMob(event.getTo().getChunk());
-        event.getTo().getWorld().spawnEntity(getCenter(event.getTo().getChunk()), mob);
+        lastSpawned = event.getTo().getWorld().spawnEntity(getCenter(event.getTo().getChunk()), mob);
         Bukkit.broadcast(Component.text("Eliminiere ", NamedTextColor.GRAY)
                 .append(Component.translatable(mob.translationKey(), NamedTextColor.GOLD))
                 .append(Component.text(" um in den nächsten Chunk voranzuschreiten.", NamedTextColor.GRAY))
@@ -62,6 +63,11 @@ public class ChunkListeners implements Listener {
     @NotNull
     private EntityType getMob(Chunk chunk) {
         return chunkMobHashMap.computeIfAbsent(chunk, c -> availableMobs.get(random.nextInt(availableMobs.size())));
+    }
+
+    public void updateMob(Chunk chunk) {
+        EntityType mob = availableMobs.get(random.nextInt(availableMobs.size()));
+        chunkMobHashMap.put(chunk, mob);
     }
 
     private void focusChunk(Chunk chunk) {
@@ -85,5 +91,16 @@ public class ChunkListeners implements Listener {
         for (World world : Bukkit.getServer().getWorlds()) {
             resetFocus(world);
         }
+    }
+
+    public void killLastSpawnedEntity() {
+        if (lastSpawned != null) {
+            lastSpawned.remove();
+            lastSpawned = null;
+        }
+    }
+
+    public Chunk getFocusedChunk() {
+        return focusedChunk;
     }
 }
