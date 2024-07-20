@@ -16,7 +16,7 @@ import java.util.List;
 public class ItemBuilder {
 
     @Contract("_, _, _, _ -> param1")
-    public static @NotNull ItemStack buildItem(@NotNull ItemStack itemStack, Component name, boolean applyFlags, Component ...lore) {
+    public static @NotNull ItemStack buildItem(@NotNull ItemStack itemStack, Component name, boolean applyFlags, Component... lore) {
         ItemMeta meta = itemStack.getItemMeta();
         if (meta == null) return itemStack;
         meta.setDisplayName(LegacyComponentSerializer.legacySection().serialize(name.decoration(TextDecoration.ITALIC, TextDecoration.State.FALSE)));

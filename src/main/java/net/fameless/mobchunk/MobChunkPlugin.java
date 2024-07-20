@@ -17,6 +17,10 @@ public final class MobChunkPlugin extends JavaPlugin {
     private ChunkListeners chunkListeners;
     private Timer timer;
 
+    public static MobChunkPlugin get() {
+        return instance;
+    }
+
     @Override
     public void onEnable() {
         instance = this;
@@ -61,9 +65,5 @@ public final class MobChunkPlugin extends JavaPlugin {
 
     public ChunkListeners getChunkListeners() {
         return chunkListeners;
-    }
-
-    public static MobChunkPlugin get() {
-        return instance;
     }
 }
