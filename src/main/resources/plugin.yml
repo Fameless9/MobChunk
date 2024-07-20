@@ -3,7 +3,7 @@ version: '1.1.3'
 main: net.fameless.mobchunk.MobChunkPlugin
 api-version: '1.20'
 author: Fameless9
-prefix: "[MobChunk]"
+prefix: "MobChunk"
 website: https://github.com/Fameless9/MobChunk
 
 commands:
