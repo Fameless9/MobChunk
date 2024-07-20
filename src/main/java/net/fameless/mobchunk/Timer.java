@@ -1,9 +1,6 @@
 package net.fameless.mobchunk;
 
-import net.fameless.mobchunk.util.Format;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextDecoration;
+import net.fameless.mobchunk.language.Lang;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -20,7 +17,6 @@ import java.util.List;
 public class Timer implements CommandExecutor, TabCompleter {
 
     private final MobChunkPlugin mobChunkPlugin;
-    private final Component usage = Component.text("Verwendung: /timer <toggle, set> <Zeit>.", NamedTextColor.RED);
     private boolean running;
     private int time;
 
@@ -51,9 +47,9 @@ public class Timer implements CommandExecutor, TabCompleter {
     private void sendActionbar() {
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (running) {
-                p.sendActionBar(Component.text(Format.formatTime(time), NamedTextColor.GOLD));
+                p.sendActionBar(Lang.getCaption("timer-running"));
             } else {
-                p.sendActionBar(Component.text("Timer ist pausiert.", NamedTextColor.GOLD, TextDecoration.ITALIC));
+                p.sendActionBar(Lang.getCaption("timer-paused"));
             }
         }
     }
@@ -61,11 +57,11 @@ public class Timer implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(Component.text("Nur spieler können diesen Command benutzen!", NamedTextColor.RED));
+            sender.sendMessage(Lang.getCaption("not-a-player"));
             return false;
         }
         if (args.length < 1) {
-            sender.sendMessage(usage);
+            sender.sendMessage(Lang.getCaption("timer-usage"));
             return false;
         }
 
@@ -79,14 +75,14 @@ public class Timer implements CommandExecutor, TabCompleter {
             }
             case "set": {
                 if (args.length < 2) {
-                    sender.sendMessage(usage);
+                    sender.sendMessage(Lang.getCaption("timer-usage"));
                     return false;
                 }
                 int time;
                 try {
                     time = Integer.parseInt(args[1]);
                 } catch (NumberFormatException e) {
-                    sender.sendMessage(Component.text("Zeit muss eine Zahl sein!", NamedTextColor.RED));
+                    sender.sendMessage(Lang.getCaption("time-not-a-number"));
                     return false;
                 }
                 this.time = time;

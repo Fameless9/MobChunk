@@ -1,3 +1,8 @@
+# Available languages:
+# de → german | deutsch
+# en → english | english
+lang: de
+
 excluded-mobs:
   - MINECART_COMMAND
   - ARMOR_STAND
@@ -55,3 +60,4 @@ excluded-mobs:
   - PLAYER
   - ALLAY
   - BREEZE
+  - WINDCHARGE

@@ -1,7 +1,6 @@
 package net.fameless.mobchunk;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
+import net.fameless.mobchunk.language.Lang;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -47,10 +46,7 @@ public class ChunkListeners implements Listener {
         focusChunk(event.getTo().getChunk());
         EntityType mob = getMob(event.getTo().getChunk());
         lastSpawned = event.getTo().getWorld().spawnEntity(getCenter(event.getTo().getChunk()), mob);
-        Bukkit.broadcast(Component.text("Eliminiere ", NamedTextColor.GRAY)
-                .append(Component.translatable(mob.translationKey(), NamedTextColor.GOLD))
-                .append(Component.text(" um in den nächsten Chunk voranzuschreiten.", NamedTextColor.GRAY))
-        );
+        Bukkit.broadcast(Lang.getCaption("kill-mob-message", mob));
     }
 
     @EventHandler(ignoreCancelled = true)

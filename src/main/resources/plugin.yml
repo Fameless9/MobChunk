@@ -1,5 +1,5 @@
 name: MobChunk
-version: '1.0'
+version: '1.1.0'
 main: net.fameless.mobchunk.MobChunkPlugin
 api-version: '1.20'
 author: Fameless9
@@ -9,3 +9,5 @@ commands:
     permission: mobchunk.timer
   skip:
     permission: mobchunk.skip
+  language:
+    permission: mobchunk.language

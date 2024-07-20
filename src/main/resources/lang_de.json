@@ -1,0 +1,11 @@
+{
+  "kill-mob-message": "<gray>Eliminiere <gold>{mob} <gray>um in den nächsten Chunk voranzuschreiten.",
+  "not-a-player": "<red>Nur Spieler können diesen Command benutzen!",
+  "no-mob-to-skip": "<red>Es gibt keinen Mob zum Skippen!",
+  "mob-skipped": "<green>Der Mob für diesen Chunk wurde geskippt.",
+  "timer-usage": "<red>Verwendung: /timer <toggle|set> <Zeit>",
+  "timer-running": "<gold>{timer.time}",
+  "timer-paused": "<gold><italic>Timer ist pausiert.",
+  "time-not-a-number": "<red>Zeit muss eine Zahl sein!",
+  "adjust-language": "Sprache anpassen"
+}
