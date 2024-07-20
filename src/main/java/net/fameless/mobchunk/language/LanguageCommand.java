@@ -74,6 +74,8 @@ public class LanguageCommand implements CommandExecutor, Listener, InventoryHold
                 break;
             }
         }
+
+        event.getWhoClicked().openInventory(getLanguageInventory());
     }
 
     @Override
