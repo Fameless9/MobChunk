@@ -8,10 +8,16 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public class Timer implements CommandExecutor {
+import java.util.ArrayList;
+import java.util.List;
+
+public class Timer implements CommandExecutor, TabCompleter {
 
     private final MobChunkPlugin mobChunkPlugin;
     private final Component usage = Component.text("Verwendung: /timer <toggle, set> <Zeit>.", NamedTextColor.RED);
@@ -88,5 +94,16 @@ public class Timer implements CommandExecutor {
             }
         }
         return false;
+    }
+
+    @Override
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
+        if (args.length == 1) {
+            return StringUtil.copyPartialMatches(args[0], List.of("set", "toggle"), new ArrayList<>());
+        }
+        if (args.length == 2 && args[1].isEmpty()) {
+            return List.of("<time>");
+        }
+        return List.of();
     }
 }

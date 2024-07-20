@@ -26,6 +26,7 @@ public final class MobChunkPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(chunkListeners, this);
 
         getCommand("timer").setExecutor(timer);
+        getCommand("timer").setTabCompleter(timer);
     }
 
     @Override
