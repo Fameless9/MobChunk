@@ -60,4 +60,5 @@ excluded-mobs:
   - PLAYER
   - ALLAY
   - BREEZE
-  - WINDCHARGE
+  - WIND_CHARGE
+  - VEX
