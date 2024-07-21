@@ -11,6 +11,8 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityPortalEvent;
+import org.bukkit.event.entity.EntityTeleportEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.world.ChunkPopulateEvent;
 import org.jetbrains.annotations.NotNull;
@@ -49,10 +51,27 @@ public class ChunkListeners implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onEntityDeath(EntityDeathEvent event) {
         if (focusedChunk == null) return;
-        if (event.getEntityType() == getMob(focusedChunk)) {
+        if (event.getEntityType() == lastSpawned.getType()) {
             resetFocus(event.getEntity().getWorld());
             lastSpawned = null;
         }
+    }
+
+    // Prevent entity to teleport out of chunk
+    @EventHandler(ignoreCancelled = true)
+    public void onEntityTeleport(EntityTeleportEvent event) {
+        if (focusedChunk == null) return;
+        if (event.getEntity() != lastSpawned) return;
+        if (event.getTo().getChunk() == focusedChunk) return;
+        event.setCancelled(true);
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onEntityPortal(EntityPortalEvent event) {
+        if (focusedChunk == null) return;
+        if (event.getEntity() != lastSpawned) return;
+        if (event.getTo().getChunk() == focusedChunk) return;
+        event.setCancelled(true);
     }
 
     private void update(Chunk chunk) {
