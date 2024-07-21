@@ -8,11 +8,10 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.EntityPortalEvent;
-import org.bukkit.event.entity.EntityTeleportEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.world.ChunkPopulateEvent;
 import org.jetbrains.annotations.NotNull;
@@ -30,8 +29,7 @@ public class ChunkListeners implements Listener {
 
     public ChunkListeners(@NotNull MobChunkPlugin mobChunkPlugin) {
         this.mobChunkPlugin = mobChunkPlugin;
-        List<String> mobsToExclude = mobChunkPlugin.getConfig().getStringList("excluded-mobs");
-        Arrays.stream(EntityType.values()).filter(entityType -> !mobsToExclude.contains(entityType.name())).forEach(availableMobs::add);
+        updateAvailableMobs();
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -43,9 +41,24 @@ public class ChunkListeners implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerMove(PlayerMoveEvent event) {
+        if (event.getTo() == null) return;
         if (!mobChunkPlugin.getTimer().isRunning()) return;
         if (event.getFrom().getChunk().equals(event.getTo().getChunk())) return;
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (player == event.getPlayer()) continue;
+            player.teleport(event.getTo());
+        }
         update(event.getTo());
+    }
+
+    // To handle creeper explosions
+    @EventHandler(ignoreCancelled = true)
+    public void onEntityExplode(EntityExplodeEvent event) {
+        if (focusedChunk == null) return;
+        if (event.getEntityType() == lastSpawned.getType()) {
+            resetFocus(event.getEntity().getWorld());
+            lastSpawned = null;
+        }
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -60,6 +73,7 @@ public class ChunkListeners implements Listener {
     // Prevent entity to teleport out of chunk
     @EventHandler(ignoreCancelled = true)
     public void onEntityTeleport(EntityTeleportEvent event) {
+        if (event.getTo() == null) return;
         if (focusedChunk == null) return;
         if (event.getEntity() != lastSpawned) return;
         if (event.getTo().getChunk() == focusedChunk) return;
@@ -68,10 +82,18 @@ public class ChunkListeners implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onEntityPortal(EntityPortalEvent event) {
+        if (event.getTo() == null) return;
         if (focusedChunk == null) return;
         if (event.getEntity() != lastSpawned) return;
         if (event.getTo().getChunk() == focusedChunk) return;
         event.setCancelled(true);
+    }
+
+    private void updateAvailableMobs() {
+        mobChunkPlugin.reloadConfig();
+        List<String> mobsToExclude = mobChunkPlugin.getConfig().getStringList("excluded-mobs");
+        availableMobs.clear();
+        Arrays.stream(EntityType.values()).filter(entityType -> !mobsToExclude.contains(entityType.name())).forEach(availableMobs::add);
     }
 
     private void update(Location playerLoc) {
