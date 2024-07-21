@@ -29,7 +29,7 @@ dependencies {
 }
 
 group = "net.fameless"
-version = "1.1.3"
+version = "1.2.0"
 description = "ChunkMob"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
