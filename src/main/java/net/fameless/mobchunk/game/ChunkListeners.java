@@ -45,7 +45,7 @@ public class ChunkListeners implements Listener {
     public void onPlayerMove(PlayerMoveEvent event) {
         if (!mobChunkPlugin.getTimer().isRunning()) return;
         if (event.getFrom().getChunk().equals(event.getTo().getChunk())) return;
-        update(event.getTo().getChunk());
+        update(event.getTo());
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -74,11 +74,12 @@ public class ChunkListeners implements Listener {
         event.setCancelled(true);
     }
 
-    private void update(Chunk chunk) {
+    private void update(Location playerLoc) {
+        Chunk chunk = playerLoc.getChunk();
         killLastSpawnedEntity();
-        focusChunk(chunk);
+        focusChunk(playerLoc);
         EntityType mob = getMob(chunk);
-        lastSpawned = chunk.getWorld().spawnEntity(getCenter(chunk), mob);
+        lastSpawned = chunk.getWorld().spawnEntity(getCenter(playerLoc), mob);
         Bukkit.broadcastMessage(Lang.getCaption("kill-mob-message", mob));
     }
 
@@ -92,10 +93,10 @@ public class ChunkListeners implements Listener {
         chunkMobHashMap.put(chunk, mob);
     }
 
-    private void focusChunk(@NotNull Chunk chunk) {
-        chunk.getWorld().getWorldBorder().setCenter(getCenter(chunk));
-        chunk.getWorld().getWorldBorder().setSize(16);
-        focusedChunk = chunk;
+    private void focusChunk(Location playerLoc) {
+        playerLoc.getChunk().getWorld().getWorldBorder().setCenter(getCenter(playerLoc));
+        playerLoc.getChunk().getWorld().getWorldBorder().setSize(16);
+        focusedChunk = playerLoc.getChunk();
     }
 
     public void resetFocus(@NotNull World world) {
@@ -104,16 +105,22 @@ public class ChunkListeners implements Listener {
     }
 
     @NotNull
-    private Location getCenter(@NotNull Chunk chunk) {
-        Location location = chunk.getBlock(8, 64, 8).getLocation();
-        location.setY(location.getWorld().getHighestBlockYAt(location.getBlockX(), location.getBlockZ()) + 1);
+    private Location getCenter(@NotNull Location playerLoc) {
+        Location chunkCenter = playerLoc.getChunk().getBlock(8, 0, 8).getLocation();
+        Location location = playerLoc.clone();
+        location.setX(chunkCenter.getX());
+        location.setZ(chunkCenter.getZ());
+
+        while (!location.getWorld().getBlockAt(location.add(0, 1, 0)).isEmpty()) {
+            location.add(0, 1, 0);
+        }
         return location;
     }
 
     public void handleStart() {
         if (Bukkit.getOnlinePlayers().isEmpty()) return;
-        Chunk chunk = Bukkit.getOnlinePlayers().stream().toList().get(0).getLocation().getChunk();
-        update(chunk);
+        Location location = Bukkit.getOnlinePlayers().stream().toList().get(0).getLocation();
+        update(location);
     }
 
     public void handlePause() {
