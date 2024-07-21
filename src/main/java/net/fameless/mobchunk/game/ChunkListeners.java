@@ -40,7 +40,7 @@ public class ChunkListeners implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onPlayerMove(PlayerMoveEvent event) {
+    public void onPlayerMove(@NotNull PlayerMoveEvent event) {
         if (event.getTo() == null) return;
         if (!mobChunkPlugin.getTimer().isRunning()) return;
         if (event.getFrom().getChunk().equals(event.getTo().getChunk())) return;
@@ -72,7 +72,7 @@ public class ChunkListeners implements Listener {
 
     // Prevent entity to teleport out of chunk
     @EventHandler(ignoreCancelled = true)
-    public void onEntityTeleport(EntityTeleportEvent event) {
+    public void onEntityTeleport(@NotNull EntityTeleportEvent event) {
         if (event.getTo() == null) return;
         if (focusedChunk == null) return;
         if (event.getEntity() != lastSpawned) return;
@@ -81,7 +81,7 @@ public class ChunkListeners implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onEntityPortal(EntityPortalEvent event) {
+    public void onEntityPortal(@NotNull EntityPortalEvent event) {
         if (event.getTo() == null) return;
         if (focusedChunk == null) return;
         if (event.getEntity() != lastSpawned) return;
@@ -96,7 +96,7 @@ public class ChunkListeners implements Listener {
         Arrays.stream(EntityType.values()).filter(entityType -> !mobsToExclude.contains(entityType.name())).forEach(availableMobs::add);
     }
 
-    private void update(Location playerLoc) {
+    private void update(@NotNull Location playerLoc) {
         Chunk chunk = playerLoc.getChunk();
         killLastSpawnedEntity();
         focusChunk(playerLoc);
@@ -115,7 +115,7 @@ public class ChunkListeners implements Listener {
         chunkMobHashMap.put(chunk, mob);
     }
 
-    private void focusChunk(Location playerLoc) {
+    private void focusChunk(@NotNull Location playerLoc) {
         playerLoc.getChunk().getWorld().getWorldBorder().setCenter(getCenter(playerLoc));
         playerLoc.getChunk().getWorld().getWorldBorder().setSize(16);
         focusedChunk = playerLoc.getChunk();
@@ -133,8 +133,16 @@ public class ChunkListeners implements Listener {
         location.setX(chunkCenter.getX());
         location.setZ(chunkCenter.getZ());
 
-        while (!location.getWorld().getBlockAt(location.add(0, 1, 0)).isEmpty()) {
-            location.add(0, 1, 0);
+        if (location.getWorld().getBlockAt(location.subtract(0, 1, 0)).isEmpty()) {
+            while (location.getWorld().getBlockAt(location.subtract(0, 1, 0)).isEmpty()) {
+                location.subtract(0, 1, 0);
+            }
+            location.add(0, 2, 0);
+        } else {
+            while (!location.getWorld().getBlockAt(location.add(0, 1, 0)).isEmpty()) {
+                location.add(0, 1, 0);
+            }
+            location.subtract(0, 1, 0);
         }
         return location;
     }
