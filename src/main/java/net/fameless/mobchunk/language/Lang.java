@@ -47,15 +47,20 @@ public class Lang {
     }
 
     public static @NotNull String getCaption(String path) {
+        String prefix = langObject.get("prefix").getAsString();
         String message = langObject.get(path).getAsString();
-        message = message.replace("{timer.time}", Format.formatTime(MobChunkPlugin.get().getTimer().getTime()));
+        message = message.replace("{timer.time}", Format.formatTime(MobChunkPlugin.get().getTimer().getTime()))
+                .replace("{prefix}", prefix);
         return LegacyComponentSerializer.legacySection().serialize(MiniMessage.miniMessage().deserialize(message));
     }
 
     public static @NotNull String getCaption(String path, @NotNull EntityType mobReplacement) {
+        String prefix = langObject.get("prefix").getAsString();
         String message = langObject.get(path).getAsString();
-        message = message.replace("{timer.time}", Format.formatTime(MobChunkPlugin.get().getTimer().getTime()))
-                .replace("{mob}", Format.formatName(mobReplacement.name()));
+        message = message
+                .replace("{mob}", Format.formatName(mobReplacement.name()))
+                .replace("{timer.time}", Format.formatTime(MobChunkPlugin.get().getTimer().getTime()))
+                .replace("{prefix}", prefix);
         return LegacyComponentSerializer.legacySection().serialize(MiniMessage.miniMessage().deserialize(message));
     }
 

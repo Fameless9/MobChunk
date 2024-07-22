@@ -1,11 +1,12 @@
 {
-  "kill-mob-message": "<gray>Eliminate <gold>{mob} <gray>to progress to the next chunk.",
-  "not-a-player": "<red>Only players may use this command!",
-  "no-mob-to-skip": "<red>There is no mob to skip!",
-  "mob-skipped": "<green>The mob for this chunk has been skipped.",
-  "timer-usage": "<red>Usage: /timer <toggle|set> <time>",
+  "prefix": "<gold><bold>MC <!bold><dark_gray>»<reset> ",
+  "kill-mob-message": "{prefix}<gray>Eliminate <gold>{mob} <gray>to progress to the next chunk.",
+  "not-a-player": "{prefix}<red>Only players may use this command!",
+  "no-mob-to-skip": "{prefix}<red>There is no mob to skip!",
+  "mob-skipped": "{prefix}<green>The mob for this chunk has been skipped.",
+  "timer-usage": "{prefix}<red>Usage: /timer <toggle|set> <time>",
   "timer-running": "<gold>{timer.time}",
   "timer-paused": "<gold><italic>Timer paused.",
-  "time-not-a-number": "<red>Time argument must be a number!",
+  "time-not-a-number": "{prefix}<red>Time argument must be a number!",
   "adjust-language": "Adjust language"
 }
