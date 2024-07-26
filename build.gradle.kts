@@ -2,6 +2,7 @@ plugins {
     `java-library`
     `maven-publish`
     id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("com.diffplug.spotless") version "7.0.0.BETA1"
 }
 
 repositories {
@@ -57,5 +58,14 @@ tasks {
 
     withType<Javadoc> {
         options.encoding = "UTF-8"
+    }
+
+    spotless {
+        java {
+            target("**/*.java")
+            endWithNewline()
+            trimTrailingWhitespace()
+            removeUnusedImports()
+        }
     }
 }

@@ -11,7 +11,10 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.*;
+import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.entity.EntityPortalEvent;
+import org.bukkit.event.entity.EntityTeleportEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.world.ChunkPopulateEvent;
 import org.jetbrains.annotations.NotNull;
@@ -148,22 +151,16 @@ public class ChunkListeners implements Listener {
     }
 
     public void handleStart() {
-        if (Bukkit.getOnlinePlayers().isEmpty()) return;
-        Location location = Bukkit.getOnlinePlayers().stream().toList().get(0).getLocation();
-        update(location);
+        Bukkit.getOnlinePlayers().stream().findFirst().ifPresent(player -> update(player.getLocation()));
     }
 
     public void handlePause() {
         killLastSpawnedEntity();
-        for (World world : Bukkit.getServer().getWorlds()) {
-            resetFocus(world);
-        }
+        Bukkit.getServer().getWorlds().forEach(this::resetFocus);
     }
 
     public void handleShutdown() {
-        for (World world : Bukkit.getServer().getWorlds()) {
-            resetFocus(world);
-        }
+        Bukkit.getServer().getWorlds().forEach(this::resetFocus);
     }
 
     public void killLastSpawnedEntity() {
